@@ -1,15 +1,15 @@
 #Project variables for project and the GKE environments
-LOCATION=us-central1
+LOCATION=asia-southeast2
 PROJECT_ID=$(gcloud config list --format 'value(core.project)')
 ATTESTOR_ID=cb-attestor
-GKE_Test_Cluster_Name=test
-GKE_Staging_Cluster_Name=staging
-GKE_Prod_Cluster_Name=prod
+Test_Cloud_Run=test
+Staging_Cloud_Run=staging
+Prod_Cloud_Run=prod
 
 #GKE variables for the 3 clusters where docker image will be deployed through Cloud Deploy pipeline
-GKE_BA_Policy_Test=$LOCATION.$GKE_Test_Cluster_Name
-GKE_BA_Policy_Staging=$LOCATION.$GKE_Staging_Cluster_Name
-GKE_BA_Policy_Prod=$LOCATION.$GKE_Prod_Cluster_Name
+BA_Policy_Test=$LOCATION.$Test_Cloud_Run
+BA_Policy_Staging=$LOCATION.$Staging_Cloud_Run
+BA_Policy_Prod=$LOCATION.$Prod_Cloud_Run
 
 #Container Image stored in Artifact Registry
 REPO_NAME=test-repo
@@ -62,21 +62,21 @@ curl "https://binaryauthorization.googleapis.com/v1/projects/${PROJECT_ID}/polic
             ]
       },
       "clusterAdmissionRules": {
-          "${GKE_BA_Policy_Test}": {
+          "${BA_Policy_Test}": {
             "enforcementMode": "ENFORCED_BLOCK_AND_AUDIT_LOG",
             "evaluationMode": "REQUIRE_ATTESTATION",
             "requireAttestationsBy": [
                 "projects/${PROJECT_ID}/attestors/${ATTESTOR_ID}"
             ]
           },
-          "${GKE_BA_Policy_Staging}": {
+          "${BA_Policy_Staging}": {
             "enforcementMode": "ENFORCED_BLOCK_AND_AUDIT_LOG",
             "evaluationMode": "REQUIRE_ATTESTATION",
             "requireAttestationsBy": [
                 "projects/${PROJECT_ID}/attestors/${ATTESTOR_ID}"
             ]
           },
-          "${GKE_BA_Policy_Prod}": {
+          "${BA_Policy_Prod}": {
             "enforcementMode": "ENFORCED_BLOCK_AND_AUDIT_LOG",
             "evaluationMode": "REQUIRE_ATTESTATION",
             "requireAttestationsBy": [
